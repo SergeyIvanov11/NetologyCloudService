@@ -11,4 +11,7 @@ public class FileRequest {
 
     @NotNull
     private String filePath;
+
+    @NotNull
+    private byte[] content;
 }

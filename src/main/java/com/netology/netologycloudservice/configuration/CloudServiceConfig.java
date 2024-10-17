@@ -1,10 +1,10 @@
 package com.netology.netologycloudservice.configuration;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.EnableCaching;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -42,5 +42,10 @@ public class CloudServiceConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedOrigins("http://localhost:8081")
                 .allowedMethods("*");
+    }
+
+    @Bean
+    public Logger cloudLogger() {
+        return LoggerFactory.getLogger("CloudLogger");
     }
 }

@@ -30,6 +30,9 @@ public class CloudFile {
     @Column(name = "filepath", nullable = false)
     String filePath; // путь к файлу
 
+    @Column(name = "content", nullable = false)
+    byte[] content; // содержимое файла
+
     @CreationTimestamp
     @Column(name = "date_of_upload", nullable = false)
     LocalDateTime dateOfUpload; // время и дата загрузки файла

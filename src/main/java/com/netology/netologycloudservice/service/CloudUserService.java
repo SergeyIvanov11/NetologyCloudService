@@ -10,6 +10,7 @@ import com.netology.netologycloudservice.request.UserRequest;
 import com.netology.netologycloudservice.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class CloudUserService {
 
     private final CloudFileService fileService;
     private ModelMapper mapper;
+    private final Logger logger;
 
     private UserDTO convertToUserDto(CloudUser user) {
         return mapper.map(user, UserDTO.class);
@@ -64,7 +66,8 @@ public class CloudUserService {
                 CloudUser user = findById(id);
                 user.setAvatar(file.getBytes());
                 repository.save(user);
-                return ResponseEntity.ok("Avatar for user has been successfully updated");
+                logger.info("Avatar for user "+ id + " has been successfully updated");
+                return ResponseEntity.ok("Avatar for user "+ id + " has been successfully updated");
             } else {
                 throw new IncorrectFileFormatException("Incorrect File Format");
             }
@@ -76,6 +79,7 @@ public class CloudUserService {
     public CloudUser updateUserProfile(Long id, UserUpdateRequest userUpdateRequest) {
         CloudUser user = findById(id);
         mapper.map(userUpdateRequest, user);  // обновление данных пользователя
+        logger.info("User " + id + " is updated");
         return repository.save(user);
     }
 
@@ -99,6 +103,7 @@ public class CloudUserService {
                 .registrationDate(LocalDateTime.now())
                 .role(Role.ROLE_USER)
                 .build();
+        logger.info("New user is created");
         return repository.save(newUser);
     }
 
@@ -107,10 +112,12 @@ public class CloudUserService {
         CloudUser user = findById(fileAuthorId);
         user.addFileToUsersUploadedFiles(id);
         repository.save(user);
+        logger.info("User " + fileAuthorId + " uploaded file " + id);
     }
 
     @Transactional
     public void deleteUser(Long userId) {
         repository.deleteById(userId);
+        logger.info("User " + userId + " is deleted");
     }
 }

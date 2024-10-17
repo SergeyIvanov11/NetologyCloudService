@@ -17,5 +17,6 @@ CREATE TABLE if not exists public.Files (
     filename VARCHAR(255) NOT NULL,
     owner BIGSERIAL REFERENCES public.Users (id) ON DELETE RESTRICT,
     filepath TEXT NOT NULL,
+    content BYTEA NOT NULL,
     date_of_upload TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
